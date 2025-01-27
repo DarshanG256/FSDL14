@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kaun Banega Crorepati - Quiz Game</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="game-container">
+    <h1>Kaun Banega Crorepati</h1>
+    <div class="score-container" id="score-container">
+      <p id="score">Score: ₹0</p>
+      <p id="prize">Prize: ₹0</p>
+    </div>
+    <div class="question-container" id="question-container">
+      <div class="question" id="question">Question 1</div>
+      <div class="options">
+        <button class="option" id="option1"></button>
+        <button class="option" id="option2"></button>
+        <button class="option" id="option3"></button>
+        <button class="option" id="option4"></button>
+      </div>
+    </div>
+    <div class="lifeline-container">
+      <button class="lifeline-btn" id="fiftyfifty-btn">50-50 Lifeline</button>
+    </div>
+    <button class="next-btn" id="next-btn">Next</button>
+    <div id="result-container"></div>
+  </div>
+
+  <!-- External JS file -->
+  <script src="script.js"></script>
+</body>
+</html>

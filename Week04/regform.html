@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        h2 {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            font-size: 16px;
+        }
+        .form-group input {
+            width: 92%;
+            padding: 10px;
+            margin-top: 5px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .form-group input:focus {
+            border-color: #4CAF50;
+        }
+        .form-group span {
+            color: red;
+            font-size: 14px;
+        }
+        .form-group button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 92%;
+            font-size: 16px;
+        }
+        .form-group button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Registration Form</h2>
+        <form id="registrationForm" onsubmit="return validateForm()">
+            <!-- Name -->
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name">
+                <span id="nameError"></span>
+            </div>
+            
+            <!-- Gmail -->
+            <div class="form-group">
+                <label for="gmail">Gmail</label>
+                <input type="email" id="gmail" name="gmail" placeholder="Enter your Gmail address">
+                <span id="gmailError"></span>
+            </div>
+            
+            <!-- Mobile Number -->
+            <div class="form-group">
+                <label for="mobile">Mobile Number</label>
+                <input type="text" id="mobile" name="mobile" placeholder="Enter your mobile number">
+                <span id="mobileError"></span>
+            </div>
+            
+            <!-- Date of Birth -->
+            <div class="form-group">
+                <label for="dob">Date of Birth</label>
+                <input type="date" id="dob" name="dob">
+                <span id="dobError"></span>
+            </div>
+            
+            <!-- Submit Button -->
+            <div class="form-group">
+                <button type="submit">Register</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function validateForm() {
+            // Clear previous errors
+            document.getElementById('nameError').textContent = '';
+            document.getElementById('gmailError').textContent = '';
+            document.getElementById('mobileError').textContent = '';
+            document.getElementById('dobError').textContent = '';
+            
+            // Get form values
+            var name = document.getElementById('name').value;
+            var gmail = document.getElementById('gmail').value;
+            var mobile = document.getElementById('mobile').value;
+            var dob = document.getElementById('dob').value;
+
+            var isValid = true;
+
+            // Name validation (only letters)
+            var nameRegex = /^[A-Za-z\s]+$/;
+            if (!name || !nameRegex.test(name)) {
+                document.getElementById('nameError').textContent = 'Please enter a valid name (letters only).';
+                isValid = false;
+            }
+
+            // Gmail validation (must be valid Gmail address)
+            var gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+            if (!gmail || !gmailRegex.test(gmail)) {
+                document.getElementById('gmailError').textContent = 'Please enter a valid Gmail address.';
+                isValid = false;
+            }
+
+            // Mobile number validation (must be 10 digits)
+            var mobileRegex = /^[0-9]{10}$/;
+            if (!mobile || !mobileRegex.test(mobile)) {
+                document.getElementById('mobileError').textContent = 'Please enter a valid 10-digit mobile number.';
+                isValid = false;
+            }
+
+            // Date of birth validation (must be 18+ years old)
+            var today = new Date();
+            var dobDate = new Date(dob);
+            var age = today.getFullYear() - dobDate.getFullYear();
+            var m = today.getMonth() - dobDate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < dobDate.getDate())) {
+                age--;
+            }
+
+            if (!dob || age < 18) {
+                document.getElementById('dobError').textContent = 'You must be at least 18 years old.';
+                isValid = false;
+            }
+
+            // If the form is valid, redirect to the success page
+            if (isValid) {
+                // Redirect to success page and pass a query parameter for success message
+                window.location.href = "success.html?message=Registration+Successful";
+            }
+
+            // Return form validity (prevent form submission if invalid)
+            return false; // Prevent the form from submitting
+        }
+    </script>
+
+</body>
+</html>

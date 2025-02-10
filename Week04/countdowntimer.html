@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f7f7f7;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+        .timer {
+            font-size: 40px;
+            font-weight: bold;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 10px;
+        }
+        input {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px;
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #007B9D;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Countdown Timer</h2>
+    <label for="timeInput">Enter time in seconds:</label>
+    <input type="number" id="timeInput" placeholder="Enter seconds" />
+    <button onclick="startTimer()">Start Timer</button>
+    <div class="timer" id="timerDisplay">00:00</div>
+</div>
+
+<script>
+    let timer;
+    function startTimer() {
+        const timeInput = document.getElementById('timeInput').value;
+        if (!timeInput || isNaN(timeInput) || timeInput <= 0) {
+            alert("Please enter a valid number of seconds.");
+            return;
+        }
+        
+        let timeLeft = parseInt(timeInput);
+        const timerDisplay = document.getElementById('timerDisplay');
+        
+        // Clear any existing timer
+        clearInterval(timer);
+        
+        // Update the display
+        function updateTimer() {
+            let minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
+            
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            
+            timerDisplay.innerText = `${minutes}:${seconds}`;
+            
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                timerDisplay.innerText = "Time's Up!";
+            } else {
+                timeLeft--;
+            }
+        }
+        
+        // Start the countdown
+        updateTimer();
+        timer = setInterval(updateTimer, 1000);
+    }
+</script>
+
+</body>
+</html>

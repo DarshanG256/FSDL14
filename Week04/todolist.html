@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        h2 {
+            font-size: 24px;
+            color: #333;
+            text-align: center;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #6cd9ec;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .task-list {
+            margin-top: 20px;
+            list-style: none;
+            padding-left: 0;
+        }
+        .task-item {
+            background-color: #095343;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .task-item button {
+            background-color: #ff6347;
+        }
+        .task-item button.update {
+            background-color: #ffca3a;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>To-Do List</h2>
+        <input type="text" id="taskInput" placeholder="Add a new task">
+        <button onclick="addTask()">Add Task</button>
+        <ul id="taskList" class="task-list"></ul>
+    </div>
+
+    <script>
+        let tasks = [];
+
+        // Function to add a new task
+        function addTask() {
+            const taskInput = document.getElementById('taskInput');
+            const taskText = taskInput.value.trim();
+
+            if (taskText === "") {
+                alert("Please enter a task.");
+                return;
+            }
+
+            const newTask = {
+                id: Date.now(),  // Unique ID based on timestamp
+                text: taskText
+            };
+
+            tasks.push(newTask);
+            taskInput.value = "";  // Clear input field
+            displayTasks();
+        }
+
+        // Function to update a task
+        function updateTask(id) {
+            const taskText = prompt("Update the task:");
+
+            if (taskText === null || taskText.trim() === "") {
+                return; // Cancel or empty input
+            }
+
+            const task = tasks.find(task => task.id === id);
+            if (task) {
+                task.text = taskText.trim();
+                displayTasks();  // Re-render the task list
+            }
+        }
+
+        // Function to delete a task
+        function deleteTask(id) {
+            tasks = tasks.filter(task => task.id !== id);
+            displayTasks();  // Re-render the task list
+        }
+
+        // Function to render all tasks in the list
+        function displayTasks() {
+            const taskList = document.getElementById('taskList');
+            taskList.innerHTML = "";  // Clear current list
+
+            tasks.forEach(task => {
+                const taskItem = document.createElement('li');
+                taskItem.classList.add('task-item');
+
+                taskItem.innerHTML = `
+                    <span>${task.text}</span>
+                    <div>
+                        <button class="update" onclick="updateTask(${task.id})">Update</button>
+                        <button onclick="deleteTask(${task.id})">Delete</button>
+                    </div>
+                `;
+
+                taskList.appendChild(taskItem);
+            });
+        }
+    </script>
+</body>
+</html>

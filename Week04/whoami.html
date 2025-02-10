@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Who Am I Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+        .game-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        h2 {
+            color: #4CAF50;
+        }
+        .info {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group input {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            width: 100%;
+            border: 1px solid #ccc;
+        }
+        .form-group button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .form-group button:hover {
+            background-color: #45a049;
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #d9534f;
+        }
+        .correct {
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <h2>Who Am I Game?</h2>
+        <div class="info" id="personInfo"></div>
+        <div class="form-group">
+            <input type="text" id="userGuess" placeholder="Type your guess here..." />
+        </div>
+        <div class="form-group">
+            <button onclick="checkAnswer()">Submit Guess</button>
+        </div>
+        <div class="message" id="resultMessage"></div>
+        <div class="form-group">
+            <button onclick="newRandomPerson()">Next Person</button>
+        </div>
+    </div>
+
+    <script>
+        // Array of people with their details
+        const people = [
+            {
+                name: "Albert Einstein",
+                info: "I developed the theory of relativity, one of the two pillars of modern physics. I am also known for my famous equation E=mc²."
+            },
+            {
+                name: "Marie Curie",
+                info: "I was a physicist and chemist known for my pioneering research on radioactivity. I won two Nobel Prizes."
+            },
+            {
+                name: "Leonardo da Vinci",
+                info: "I was a polymath during the Renaissance period, known for my art, inventions, and scientific contributions. My famous works include the Mona Lisa."
+            },
+            {
+                name: "William Shakespeare",
+                info: "I am an English playwright and poet, known for works such as 'Romeo and Juliet,' 'Hamlet,' and 'Macbeth.'"
+            },
+            {
+                name: "Wright Brothers",
+                info: "I am known for inventing and building the first successful airplane. Our first powered flight occurred on December 17, 1903."
+            },
+            {
+                name: "Rohit Sharma",
+                info: "I am famous for pull shot."
+            },
+            {
+                name: "Virat kohli",
+                info: "I am famous for cover drive."
+            }
+        ];
+
+        let currentPerson = null;
+
+        // Function to generate a random person and display their info
+        function newRandomPerson() {
+            const randomIndex = Math.floor(Math.random() * people.length);
+            currentPerson = people[randomIndex];
+            document.getElementById('personInfo').textContent = currentPerson.info;
+            document.getElementById('resultMessage').textContent = '';
+            document.getElementById('userGuess').value = '';
+        }
+
+        // Function to check the user's guess
+        function checkAnswer() {
+            const userGuess = document.getElementById('userGuess').value.trim();
+            const resultMessage = document.getElementById('resultMessage');
+
+            if (userGuess.toLowerCase() === currentPerson.name.toLowerCase()) {
+                resultMessage.textContent = 'Correct! Well done!';
+                resultMessage.classList.add('correct');
+                resultMessage.classList.remove('message');
+            } else {
+                resultMessage.textContent = 'Wrong answer! Try again.';
+                resultMessage.classList.add('message');
+                resultMessage.classList.remove('correct');
+            }
+        }
+
+        // Initialize the first random person
+        newRandomPerson();
+    </script>
+
+</body>
+</html>

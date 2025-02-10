@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poll System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .poll-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        .poll-container h2 {
+            margin-bottom: 20px;
+        }
+        .poll-options button {
+            padding: 10px;
+            margin: 5px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .poll-options button:hover {
+            background-color: #45a049;
+        }
+        .poll-options button:active {
+            background-color: #bbb;
+        }
+        .poll-results {
+            margin-top: 20px;
+        }
+        .poll-results div {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="poll-container">
+        <h2>What is your favorite programming language?</h2>
+        <div class="poll-options">
+            <button onclick="vote('Python')">Python</button>
+            <button onclick="vote('JavaScript')">JavaScript</button>
+            <button onclick="vote('Java')">Java</button>
+            <button onclick="vote('CPlusPlus')">C++</button>
+        </div>
+
+        <div class="poll-results">
+            <h3>Poll Results:</h3>
+            <div id="PythonResult">Python: 0 votes</div>
+            <div id="JavaScriptResult">JavaScript: 0 votes</div>
+            <div id="JavaResult">Java: 0 votes</div>
+            <div id="CPlusPlusResult">C++: 0 votes</div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize vote counts for each option
+        let votes = {
+            Python: 0,
+            JavaScript: 0,
+            Java: 0,
+            CPlusPlus: 0
+        };
+
+        // Function to handle voting
+        function vote(option) {
+            // Increase the vote count for the selected option
+            votes[option]++;
+
+            // Update the result display
+            document.getElementById(`${option}Result`).textContent = `${option}: ${votes[option]} votes`;
+        }
+    </script>
+
+</body>
+</html>

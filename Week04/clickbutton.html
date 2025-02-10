@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click the Button Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .game-container {
+            text-align: center;
+        }
+        button {
+            padding: 20px 40px;
+            font-size: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            position: absolute;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .game-info {
+            margin-top: 20px;
+        }
+        #timeRemaining {
+            font-size: 24px;
+            color: red;
+        }
+        #clicksCount {
+            font-size: 24px;
+        }
+        #startButton {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #008CBA;
+        }
+        #startButton:hover {
+            background-color: #007bb5;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <h1>Click the Button Game</h1>
+        <button id="gameButton" onclick="increaseClicks()" disabled>Click Me!</button>
+        <div class="game-info">
+            <p>Time Remaining: <span id="timeRemaining">10</span> seconds</p>
+            <p>Clicks: <span id="clicksCount">0</span></p>
+        </div>
+        <button id="startButton" onclick="startGame()">Start Game</button>
+    </div>
+
+    <script>
+        let timeRemaining = 10;
+        let clicks = 0;
+        let gameInterval;
+        let countdownInterval;
+        const gameButton = document.getElementById('gameButton');
+        const timeRemainingDisplay = document.getElementById('timeRemaining');
+        const clicksCountDisplay = document.getElementById('clicksCount');
+        const startButton = document.getElementById('startButton');
+
+        // Function to start the game
+        function startGame() {
+            // Reset game state
+            timeRemaining = 10;
+            clicks = 0;
+            clicksCountDisplay.textContent = clicks;
+            timeRemainingDisplay.textContent = timeRemaining;
+            gameButton.disabled = false;
+
+            // Start the countdown
+            countdownInterval = setInterval(updateTime, 1000);
+
+            // Enable the game button
+            startButton.disabled = true;
+            moveButton(); // Start moving the button
+        }
+
+        // Function to update the time remaining
+        function updateTime() {
+            if (timeRemaining > 0) {
+                timeRemaining--;
+                timeRemainingDisplay.textContent = timeRemaining;
+            } else {
+                endGame();
+            }
+        }
+
+        // Function to handle clicks during the game
+        function increaseClicks() {
+            clicks++;
+            clicksCountDisplay.textContent = clicks;
+            moveButton(); // Move the button to a random position after each click
+        }
+
+        // Function to move the button to a random position
+        function moveButton() {
+            const maxX = window.innerWidth - gameButton.offsetWidth;
+            const maxY = window.innerHeight - gameButton.offsetHeight;
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+
+            gameButton.style.left = randomX + 'px';
+            gameButton.style.top = randomY + 'px';
+        }
+
+        // Function to end the game
+        function endGame() {
+            clearInterval(countdownInterval);
+            gameButton.disabled = true;
+            alert("Time's up! You clicked " + clicks + " times.");
+            startButton.disabled = false;
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+        h2 {
+            font-size: 24px;
+            color: #333;
+        }
+        input[type="text"], input[type="number"] {
+            width: 80%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin: 10px 0;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .expense-list {
+            margin-top: 20px;
+            list-style: none;
+            padding-left: 0;
+        }
+        .expense-item {
+            background-color: #f9f9f9;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .expense-item button {
+            background-color: #ff6347;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Expense Tracker</h2>
+        <input type="text" id="expenseDescription" placeholder="Expense Description">
+        <input type="number" id="expenseAmount" placeholder="Amount" min="0">
+        <button onclick="addExpense()">Add Expense</button>
+
+        <h3>Total Expense: <span id="totalAmount">0</span></h3>
+
+        <ul id="expenseList" class="expense-list"></ul>
+    </div>
+
+    <script>
+        let expenses = [];
+        let totalAmount = 0;
+
+        // Function to add a new expense
+        function addExpense() {
+            const description = document.getElementById('expenseDescription').value.trim();
+            const amount = parseFloat(document.getElementById('expenseAmount').value);
+
+            if (description === "" || isNaN(amount) || amount <= 0) {
+                alert("Please enter a valid description and amount.");
+                return;
+            }
+
+            // Create new expense object
+            const newExpense = {
+                id: Date.now(),
+                description: description,
+                amount: amount
+            };
+
+            expenses.push(newExpense);
+            totalAmount += amount;
+
+            // Clear input fields
+            document.getElementById('expenseDescription').value = '';
+            document.getElementById('expenseAmount').value = '';
+
+            // Update the display
+            displayExpenses();
+        }
+
+        // Function to delete an expense
+        function deleteExpense(id) {
+            const expenseIndex = expenses.findIndex(exp => exp.id === id);
+            if (expenseIndex !== -1) {
+                totalAmount -= expenses[expenseIndex].amount;
+                expenses.splice(expenseIndex, 1);
+                displayExpenses();
+            }
+        }
+
+        // Function to render all expenses
+        function displayExpenses() {
+            const expenseList = document.getElementById('expenseList');
+            const totalAmountElement = document.getElementById('totalAmount');
+
+            // Clear the current list
+            expenseList.innerHTML = "";
+
+            // Render each expense
+            expenses.forEach(expense => {
+                const expenseItem = document.createElement('li');
+                expenseItem.classList.add('expense-item');
+                expenseItem.innerHTML = `
+                    <span>${expense.description}: $${expense.amount.toFixed(2)}</span>
+                    <button onclick="deleteExpense(${expense.id})">Delete</button>
+                `;
+                expenseList.appendChild(expenseItem);
+            });
+
+            // Update the total amount
+            totalAmountElement.textContent = totalAmount.toFixed(2);
+        }
+    </script>
+</body>
+</html>

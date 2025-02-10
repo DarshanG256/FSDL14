@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Quote Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        h2 {
+            font-size: 24px;
+            color: #333;
+        }
+        .quote {
+            font-size: 20px;
+            font-style: italic;
+            margin: 20px 0;
+            color: #555;
+        }
+        .author {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Random Quote Generator</h2>
+        <div class="quote" id="quote">"Click the button to generate a quote!"</div>
+        <div class="author" id="author">- Author</div>
+        <button onclick="generateQuote()">Generate Quote</button>
+    </div>
+
+    <script>
+        const quotes = [
+            {
+                quote: "The only way to do great work is to love what you do.",
+                author: "Steve Jobs"
+            },
+            {
+                quote: "Success is not final, failure is not fatal: It is the courage to continue that counts.",
+                author: "Winston Churchill"
+            },
+            {
+                quote: "In the end, we will remember not the words of our enemies, but the silence of our friends.",
+                author: "Martin Luther King Jr."
+            },
+            {
+                quote: "It does not matter how slowly you go as long as you do not stop.",
+                author: "Confucius"
+            },
+            {
+                quote: "Life is what happens when you're busy making other plans.",
+                author: "John Lennon"
+            },
+            {
+                quote: "You miss 100% of the shots you don't take.",
+                author: "Wayne Gretzky"
+            },
+            {
+                quote: "The best way to predict the future is to create it.",
+                author: "Abraham Lincoln"
+            }
+        ];
+
+        function generateQuote() {
+            // Get a random index from the quotes array
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+
+            // Select the quote and author based on the random index
+            const randomQuote = quotes[randomIndex];
+
+            // Display the quote and author in the HTML
+            document.getElementById("quote").textContent = `"${randomQuote.quote}"`;
+            document.getElementById("author").textContent = `- ${randomQuote.author}`;
+        }
+    </script>
+</body>
+</html>

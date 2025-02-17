@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .news-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .news-item {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+        }
+        .news-item h3 {
+            margin: 0;
+            font-size: 22px;
+        }
+        .news-item p {
+            font-size: 16px;
+            color: #555;
+        }
+        .news-item a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .news-item a:hover {
+            text-decoration: underline;
+        }
+        .loading {
+            text-align: center;
+            font-size: 20px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Latest News</h1>
+        <p>Stay updated with the latest headlines from around the world.</p>
+    </div>
+
+    <div id="news-list" class="news-list">
+        <!-- News articles will be loaded here dynamically -->
+    </div>
+
+    <div id="loading" class="loading">Loading news...</div>
+</div>
+
+<script>
+// Your API key
+const apiKey = '5b3feb27378b49a98f8f91c85300fc91';  // Your actual API key
+const apiUrl = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${apiKey}`;
+
+// CORS Proxy URL (CORS Anywhere)
+const corsProxyUrl = 'https://cors-anywhere.herokuapp.com/';
+
+// Combine proxy URL with NewsAPI URL to bypass CORS
+const fullApiUrl = `${corsProxyUrl}${apiUrl}`;
+
+async function fetchNews() {
+    try {
+        // Fetch news data through the CORS proxy
+        const response = await fetch(fullApiUrl);
+
+        // If the response is not okay, throw an error
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+
+        // Check if the API response is successful
+        if (data.status === 'ok') {
+            const newsList = document.getElementById('news-list');
+            const loadingMessage = document.getElementById('loading');
+            
+            loadingMessage.style.display = 'none'; // Hide loading message once the news is loaded
+
+            // Loop through the articles and create a new div for each one
+            data.articles.forEach(article => {
+                const newsItem = document.createElement('div');
+                newsItem.classList.add('news-item');
+                
+                newsItem.innerHTML = `
+                    <h3><a href="${article.url}" target="_blank">${article.title}</a></h3>
+                    <p>${article.description || 'No description available'}</p>
+                `;
+                
+                newsList.appendChild(newsItem);
+            });
+        } else {
+            alert('Error fetching news data.');
+        }
+    } catch (error) {
+        console.error('Error fetching news data:', error);
+        alert('There was an error fetching news data.');
+    }
+}
+
+// Fetch news when the page loads
+fetchNews();
+</script>
+
+</body>
+</html>

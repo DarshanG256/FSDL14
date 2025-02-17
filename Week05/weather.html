@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Forecasting App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff;
+        }
+        .container {
+            text-align: center;
+            padding: 50px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 200px;
+            margin: 20px 0;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        #weather-result {
+            margin-top: 20px;
+        }
+        .error {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Weather Forecasting App</h1>
+    <p>Enter the city name to get the weather forecast:</p>
+    <input type="text" id="city-name" placeholder="Enter city name">
+    <button onclick="getWeather()">Get Weather</button>
+
+    <div id="weather-result"></div>
+</div>
+
+<script>
+    async function getWeather() {
+        const city = document.getElementById('city-name').value;
+        const weatherResult = document.getElementById('weather-result');
+
+        if (city === "") {
+            weatherResult.innerHTML = "<p class='error'>Please enter a city name!</p>";
+            return;
+        }
+
+        try {
+            // Step 1: Fetch latitude and longitude for the city using the GeoCode API
+            const geocodeResponse = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1&language=en`);
+            const geocodeData = await geocodeResponse.json();
+
+            if (geocodeData.results.length === 0) {
+                weatherResult.innerHTML = "<p class='error'>City not found. Please try again.</p>";
+                return;
+            }
+
+            const latitude = geocodeData.results[0].latitude;
+            const longitude = geocodeData.results[0].longitude;
+
+            // Step 2: Fetch weather data for the city using the latitude and longitude
+            const weatherResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`);
+            const weatherData = await weatherResponse.json();
+
+            const temperature = weatherData.current_weather.temperature;
+            const weatherCode = weatherData.current_weather.weathercode;
+            const windSpeed = weatherData.current_weather.windspeed;
+
+            // Mapping weather code to description
+            const weatherDescription = getWeatherDescription(weatherCode);
+
+            weatherResult.innerHTML = `
+                <h2 class="success">Weather in ${city}</h2>
+                <p>Temperature: ${temperature}°C</p>
+                <p>Description: ${weatherDescription}</p>
+                <p>Wind Speed: ${windSpeed} km/h</p>
+            `;
+        } catch (error) {
+            weatherResult.innerHTML = "<p class='error'>Error fetching weather data. Please try again.</p>";
+            console.error(error);
+        }
+    }
+
+    // Function to map weather codes to descriptions
+    function getWeatherDescription(code) {
+        const weatherCodes = {
+            0: 'Clear',
+            1: 'Mainly clear',
+            2: 'Partly cloudy',
+            3: 'Overcast',
+            45: 'Foggy',
+            48: 'Depositing rime fog',
+            51: 'Drizzle',
+            53: 'Light rain',
+            55: 'Moderate rain',
+            56: 'Freezing drizzle',
+            57: 'Freezing rain',
+            61: 'Light showers',
+            63: 'Moderate showers',
+            65: 'Heavy showers',
+            66: 'Freezing showers',
+            67: 'Heavy freezing showers',
+            71: 'Light snow showers',
+            73: 'Moderate snow showers',
+            75: 'Heavy snow showers',
+            77: 'Snow grains',
+            80: 'Light rain showers',
+            81: 'Moderate rain showers',
+            82: 'Heavy rain showers',
+            85: 'Light snow',
+            86: 'Moderate snow',
+            87: 'Heavy snow',
+            95: 'Thunderstorms',
+            96: 'Thunderstorms with hail',
+            99: 'Thunderstorms with heavy hail',
+        };
+
+        return weatherCodes[code] || 'Unknown weather';
+    }
+</script>
+
+</body>
+</html>

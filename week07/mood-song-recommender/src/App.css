@@ -1,0 +1,83 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.app {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 400px;
+}
+
+h1 {
+  text-align: center;
+  color: #4a90e2;
+}
+
+.mood-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mood-input input {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.mood-input button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.mood-input button:hover {
+  background-color: #357ab7;
+}
+
+.song-list {
+  margin-top: 20px;
+}
+
+.song-item {
+  background-color: #f9f9f9;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.song-item h3 {
+  font-size: 1.2em;
+  color: #333;
+}
+
+.song-item p {
+  font-size: 0.9em;
+  color: #666;
+}
+
+.song-item strong {
+  color: #4a90e2;
+}

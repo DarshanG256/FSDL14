@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Display Input Text</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Enter Text Below</h1>
+    <!-- Input Field -->
+    <input type="text" id="textInput" placeholder="Type something...">
+    
+    <!-- Button to trigger action -->
+    <button onclick="displayText()">Click Me</button>
+    
+    <!-- Paragraph to display the entered text -->
+    <p id="outputText">Your text will appear here.</p>
+  </div>
+
+  <!-- JavaScript Function -->
+  <script>
+    function displayText() {
+      // Get the value from the input field
+      const inputValue = document.getElementById('textInput').value;
+      
+      // Display the entered text in the paragraph
+      document.getElementById('outputText').innerHTML = inputValue;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+
+    <!-- Include Angular and Angular Forms CDN -->
+    <script src="https://unpkg.com/@angular/core@13.3.0/bundles/core.umd.js"></script>
+    <script src="https://unpkg.com/@angular/common@13.3.0/bundles/common.umd.js"></script>
+    <script src="https://unpkg.com/@angular/forms@13.3.0/bundles/forms.umd.js"></script>
+
+    <style>
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input {
+            display: block;
+            margin: 10px 0;
+            padding: 8px;
+            width: 100%;
+            border: 1px solid #ccc;
+        }
+
+        small {
+            color: red;
+            font-size: 12px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            background-color: #cccccc;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script type="module">
+  const { Component, NgModule, ɵrenderComponent } = window.ng.core;
+  const { ReactiveFormsModule, FormGroup, FormControl, Validators } = window.ng.forms;
+  
+  @Component({
+    selector: 'app-root',
+    template: `
+      <h2 style="text-align:center;">Registration Form</h2>
+      <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+        <div>
+          <label for="name">Name:</label>
+          <input id="name" formControlName="name" />
+          <small *ngIf="registrationForm.get('name').touched && registrationForm.get('name').invalid">
+            Name is required and must be at least 3 characters long.
+          </small>
+        </div>
+
+        <div>
+          <label for="email">Email:</label>
+          <input id="email" formControlName="email" />
+          <small *ngIf="registrationForm.get('email').touched && registrationForm.get('email').invalid">
+            Please enter a valid email address.
+          </small>
+        </div>
+
+        <div>
+          <label for="password">Password:</label>
+          <input type="password" id="password" formControlName="password" />
+          <small *ngIf="registrationForm.get('password').touched && registrationForm.get('password').invalid">
+            Password must be at least 6 characters long.
+          </small>
+        </div>
+
+        <div>
+          <label for="confirmPassword">Confirm Password:</label>
+          <input type="password" id="confirmPassword" formControlName="confirmPassword" />
+          <small *ngIf="registrationForm.get('confirmPassword').touched && registrationForm.get('confirmPassword').invalid">
+            Passwords do not match.
+          </small>
+        </div>
+
+        <button type="submit" [disabled]="registrationForm.invalid">Submit</button>
+      </form>
+    `,
+  })
+  class AppComponent {
+    registrationForm = new FormGroup({
+      name: new FormControl('', [Validators.required, Validators.minLength(3)]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+      confirmPassword: new FormControl('', [Validators.required]),
+    }, { validators: this.passwordsMatch });
+
+    // Custom validator to check if password and confirm password match
+    passwordsMatch(group) { 
+      const password = group.get('password').value;
+      const confirmPassword = group.get('confirmPassword').value;
+      if (password !== confirmPassword) {
+        return { passwordMismatch: true };
+      }
+      return null;
+    }
+
+    onSubmit() {
+      if (this.registrationForm.valid) {
+        console.log(this.registrationForm.value);
+      } else {
+        console.log('Form is not valid');
+      }
+    }
+  }
+
+  @NgModule({
+    declarations: [AppComponent],
+    imports: [ReactiveFormsModule],
+    bootstrap: [AppComponent],
+  })
+  class AppModule {}
+
+  // Bootstrap the app
+  ɵrenderComponent(AppComponent, { hostSelector: '#app' });
+</script>
+
+</body>
+</html>
